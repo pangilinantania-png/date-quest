@@ -142,4 +142,73 @@
                 <p>where to, sosuke mi lab?</p>
                 <div class="option" onclick="pick('japan')">JAPAN (sept trip foreshadow, pros: cheaper food!) 🇯🇵</div>
                 <div class="option" onclick="pick('vietnam')">VIETNAM (trip down memory lane, pros: bun cha!) 🇻🇳</div>
-                <div class="back
+                <div class="back-btn" onclick="next('intro')">< BACK</div>
+            </div>
+        </div>
+
+        <div id="boss" class="screen">
+            <div class="pixel-box">
+                <p>FINAL BOSS:</p>
+                <p id="bossText" style="font-size:14px; color: #ffcc33;"></p>
+                <div class="option" onclick="confirmDate()">CONFIRM ❤️</div>
+                <div class="back-btn" onclick="next('country')">< BACK</div>
+            </div>
+        </div>
+
+        <div id="japan" class="screen">
+            <div class="pixel-box japan-res">
+                <h3>YAHOO! We goin to Don-Don Taberu!!!</h3>
+                <p>20 Maginhawa St., QC</p>
+                <a href="https://vt.tiktok.com/ZSHcFxoyF/" target="_blank">chekirawt here!</a>
+                <p style="font-size: 10px; margin-top: 25px;">imma chi u in japayukers! aishiteru bb ✈️🌸</p>
+                <div class="back-btn" onclick="next('country')">< RE-PICK</div>
+            </div>
+        </div>
+
+        <div id="vietnam" class="screen">
+            <div class="pixel-box vietnam-res">
+                <h3>YAYYY we are goin to Saigon Corner!!!!</h3>
+                <p>22 Scout Bayoran, QC</p>
+                <a href="https://vt.tiktok.com/ZSHcFcj6w/" target="_blank">chekirawt here!</a>
+                <p style="font-size: 10px; margin-top: 25px;">chi u in byetnamie! hoa huệ mi labiedabie 🌿✨</p>
+                <div class="back-btn" onclick="next('country')">< RE-PICK</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chosen = '';
+
+        // Add bubbles
+        const ocean = document.getElementById('ocean');
+        for (let i = 0; i < 12; i++) {
+            let b = document.createElement('div');
+            b.className = 'bubble';
+            let s = Math.random() * 25 + 10 + 'px';
+            b.style.width = s; b.style.height = s;
+            b.style.left = Math.random() * 100 + 'vw';
+            b.style.animationDelay = Math.random() * 8 + 's';
+            ocean.appendChild(b);
+        }
+
+        function next(id) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(id);
+            if(target) {
+                target.classList.add('active');
+            }
+        }
+
+        function pick(country) {
+            chosen = country;
+            document.getElementById('bossText').innerText = country === 'japan' ? "Confirm Japan?" : "Confirm Vietnam?";
+            next('boss');
+        }
+
+        function confirmDate() {
+            next(chosen);
+        }
+    </script>
+</body>
+</html>
