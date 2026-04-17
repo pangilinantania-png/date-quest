@@ -9,14 +9,13 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            margin: 0; 
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Press Start 2P', cursive; 
             background-color: #5da399; 
             color: #fff; 
-            overflow-x: hidden;
             text-align: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .ocean-bg {
@@ -26,31 +25,35 @@
             z-index: -1;
         }
 
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
+        /* Fixed Music Button */
+        .music-toggle {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 1000;
+            background: #f8ead6;
+            border: 4px solid #333;
+            padding: 10px;
+            font-size: 10px;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #333;
         }
 
-        .screen { 
-            display: none; 
-            width: 100%;
-            max-width: 600px;
-            animation: fadeIn 0.5s;
+        .wrapper {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 100vh; padding: 20px;
         }
+
+        .screen { display: none; width: 100%; max-width: 600px; animation: fadeIn 0.5s; }
         .active { display: block !important; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .pixel-box { 
-            border: 8px solid #f8ead6; 
-            padding: 35px; 
+            border: 8px solid #f8ead6; padding: 35px; 
             background: rgba(230, 95, 92, 0.95); 
-            box-shadow: 10px 10px 0px #333; 
-            border-radius: 4px;
+            box-shadow: 10px 10px 0px #333; border-radius: 4px;
         }
 
         .character-wrap { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; }
@@ -60,58 +63,35 @@
         .ponyo { background: #ff6666; border-radius: 50% 50% 0 0; } 
 
         p { font-size: 16px; line-height: 1.6; margin-bottom: 20px; }
-        h3 { font-size: 18px; line-height: 1.5; }
-
         .option { 
-            margin: 15px 0; 
-            padding: 22px; 
-            border: 4px solid #333; 
-            background: #f8ead6; 
-            color: #333;
-            cursor: pointer; 
-            font-size: 12px;
-            line-height: 1.4;
-            transition: 0.1s;
+            margin: 15px 0; padding: 22px; 
+            border: 4px solid #333; background: #f8ead6; color: #333;
+            cursor: pointer; font-size: 12px;
         }
         .option:active { transform: scale(0.95); background: #ffcc33; }
-
-        .back-btn {
-            margin-top: 20px;
-            padding: 12px;
-            background: #4a8c82;
-            color: white;
-            border: 3px solid #333;
-            font-size: 10px;
-            cursor: pointer;
-            display: inline-block;
-        }
+        .back-btn { margin-top: 20px; padding: 12px; background: #4a8c82; color: white; border: 3px solid #333; font-size: 10px; cursor: pointer; display: inline-block; }
 
         .japan-res { background: #ffb7d5 !important; color: #d11d7e; border-color: #fff; }
         .vietnam-res { background: #8fd694 !important; color: #1e4d2b; border-color: #fff; }
 
         a { font-size: 12px; margin-top: 20px; display: block; color: inherit; word-break: break-all; font-weight: bold; }
 
+        /* Bubbles */
         .bubble {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid white;
-            border-radius: 50%;
-            bottom: -50px;
-            pointer-events: none;
-            animation: rise 10s infinite ease-in;
+            position: absolute; background: rgba(255, 255, 255, 0.3);
+            border: 1px solid white; border-radius: 50%; bottom: -50px;
+            pointer-events: none; animation: rise 10s infinite ease-in;
         }
-        @keyframes rise {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-110vh); opacity: 0; }
-        }
+        @keyframes rise { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-110vh); opacity: 0; } }
+
+        /* Hide the actual player */
+        #yt-player { position: absolute; top: -100px; left: -100px; visibility: hidden; pointer-events: none; }
     </style>
 </head>
 <body>
     <div class="ocean-bg" id="ocean"></div>
-
-    <audio id="ponyoMusic" loop>
-        <source src="https://open.spotify.com/track/5Cpu7flGktb3B0LI8OhTwP?si=a06deced500d4a10" type="audio/mpeg">
-    </audio>
+    <div class="music-toggle" id="musicBtn" onclick="toggleMusic()">🎵 MUSIC: OFF</div>
+    <div id="yt-player"></div>
 
     <div class="wrapper">
         <div id="intro" class="screen active">
@@ -121,8 +101,8 @@
                     <div class="pixel-char ponyo"></div>
                 </div>
                 <p>hi mi sosuke ! do u wanna go on a date with ponyo :3</p>
-                <div class="option" onclick="startQuest('country')">YEEHEES</div>
-                <div class="option" onclick="startQuest('no')">NOUNOU</div>
+                <div class="option" onclick="next('country')">YEEHEES</div>
+                <div class="option" onclick="next('no')">NOUNOU</div>
             </div>
         </div>
 
@@ -137,15 +117,15 @@
         <div id="country" class="screen">
             <div class="pixel-box">
                 <p>where to, sosuke mi lab?</p>
-                <div class="option" onclick="pick('japan')">JAPAN (sept trip foreshadow, pros: cheaper food!) 🇯🇵</div>
-                <div class="option" onclick="pick('vietnam')">VIETNAM (trip down memory lane, pros: bun cha!) 🇻🇳</div>
+                <div class="option" onclick="pick('japan')">JAPAN (sept trip foreshadow!) 🇯🇵</div>
+                <div class="option" onclick="pick('vietnam')">VIETNAM (memory lane!) 🇻🇳</div>
                 <div class="back-btn" onclick="next('intro')">< BACK</div>
             </div>
         </div>
 
         <div id="boss" class="screen">
             <div class="pixel-box">
-                <p>ARE U SHORE?!S:</p>
+                <p>FINAL BOSS:</p>
                 <p id="bossText" style="font-size:14px; color: #ffcc33;"></p>
                 <div class="option" onclick="confirmDate()">CONFIRM ❤️</div>
                 <div class="back-btn" onclick="next('country')">< BACK</div>
@@ -154,40 +134,53 @@
 
         <div id="japan" class="screen">
             <div class="pixel-box japan-res">
-                <h3>YAHOO! We goin to Don-Don Taberu!!!</h3>
+                <h3>YAHOO! Don-Don Taberu!</h3>
                 <p>20 Maginhawa St., QC</p>
                 <a href="https://vt.tiktok.com/ZSHcFxoyF/" target="_blank">chekirawt here!</a>
-                <p style="font-size: 10px; margin-top: 25px;">imma chi in japayukers! aishiteru bb ✈️🌸</p>
+                <p style="font-size: 10px; margin-top: 25px;">imma chi in japayukers! ✈️🌸</p>
                 <div class="back-btn" onclick="next('country')">< RE-PICK</div>
             </div>
         </div>
 
         <div id="vietnam" class="screen">
             <div class="pixel-box vietnam-res">
-                <h3>YAYYY we are goin to Saigon Corner!!!!</h3>
+                <h3>YAYYY Saigon Corner!</h3>
                 <p>22 Scout Bayoran, QC</p>
                 <a href="https://vt.tiktok.com/ZSHcFcj6w/" target="_blank">chekirawt here!</a>
-                <p style="font-size: 10px; margin-top: 25px;">chi u in byetnamie! hoa huệ mi labiedabie 🌿✨</p>
+                <p style="font-size: 10px; margin-top: 25px;">chi u in byetnamie! 🌿✨</p>
                 <div class="back-btn" onclick="next('country')">< RE-PICK</div>
             </div>
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        let player;
+        let isPlaying = false;
         let chosen = '';
-        let musicStarted = false;
 
-        function startQuest(id) {
-            // Play music on first interaction
-            const music = document.getElementById('ponyoMusic');
-            if (!musicStarted) {
-                music.play().catch(e => console.log("Audio play blocked by browser."));
-                musicStarted = true;
-            }
-            next(id);
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                height: '0', width: '0',
+                videoId: 'mLizEoshgkc', // The Ponyo Theme song
+                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'mLizEoshgkc' }
+            });
         }
 
-        // Bubbles animation
+        function toggleMusic() {
+            const btn = document.getElementById('musicBtn');
+            if (!isPlaying) {
+                player.playVideo();
+                btn.innerText = "🎵 MUSIC: ON";
+                isPlaying = true;
+            } else {
+                player.pauseVideo();
+                btn.innerText = "🎵 MUSIC: OFF";
+                isPlaying = false;
+            }
+        }
+
+        // Bubbles & Navigation Logic
         const ocean = document.getElementById('ocean');
         for (let i = 0; i < 12; i++) {
             let b = document.createElement('div');
@@ -202,8 +195,7 @@
         function next(id) {
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => s.classList.remove('active'));
-            const target = document.getElementById(id);
-            if(target) target.classList.add('active');
+            document.getElementById(id).classList.add('active');
         }
 
         function pick(country) {
@@ -212,9 +204,7 @@
             next('boss');
         }
 
-        function confirmDate() {
-            next(chosen);
-        }
+        function confirmDate() { next(chosen); }
     </script>
 </body>
 </html>
