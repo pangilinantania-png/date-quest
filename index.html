@@ -19,7 +19,6 @@
             min-height: 100vh;
         }
 
-        /* Fixed Background */
         .ocean-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -27,7 +26,31 @@
             z-index: -1;
         }
 
-        /* Main Wrapper */
+        /* Music Button Style */
+        .music-control {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            background: #f8ead6;
+            color: #333;
+            border: 3px solid #333;
+            padding: 10px;
+            font-size: 8px;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #333;
+        }
+
+        /* Hidden Video */
+        #player-container {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+        }
+
         .wrapper {
             display: flex;
             flex-direction: column;
@@ -40,7 +63,7 @@
         .screen { 
             display: none; 
             width: 100%;
-            max-width: 600px; /* Made slightly wider */
+            max-width: 600px;
             animation: fadeIn 0.5s;
         }
         .active { display: block !important; }
@@ -49,20 +72,18 @@
 
         .pixel-box { 
             border: 8px solid #f8ead6; 
-            padding: 35px; /* Increased padding */
+            padding: 35px; 
             background: rgba(230, 95, 92, 0.95); 
             box-shadow: 10px 10px 0px #333; 
             border-radius: 4px;
         }
 
-        /* Bigger Characters */
         .character-wrap { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; }
         .pixel-char { width: 60px; height: 60px; border: 4px solid #333; display: inline-block; }
         .sousuke { background: #ffcc33; position: relative; } 
         .sousuke::after { content: ''; position: absolute; bottom: 0; left:0; width: 100%; height: 50%; background: #2c5ba9; } 
         .ponyo { background: #ff6666; border-radius: 50% 50% 0 0; } 
 
-        /* Bigger Text */
         p { font-size: 16px; line-height: 1.6; margin-bottom: 20px; }
         h3 { font-size: 18px; line-height: 1.5; }
 
@@ -73,13 +94,12 @@
             background: #f8ead6; 
             color: #333;
             cursor: pointer; 
-            font-size: 12px; /* Increased font size */
+            font-size: 12px;
             line-height: 1.4;
             transition: 0.1s;
         }
         .option:active { transform: scale(0.95); background: #ffcc33; }
 
-        /* Back Button Style */
         .back-btn {
             margin-top: 20px;
             padding: 12px;
@@ -90,14 +110,12 @@
             cursor: pointer;
             display: inline-block;
         }
-        .back-btn:active { background: #333; }
 
         .japan-res { background: #ffb7d5 !important; color: #d11d7e; border-color: #fff; }
         .vietnam-res { background: #8fd694 !important; color: #1e4d2b; border-color: #fff; }
 
         a { font-size: 12px; margin-top: 20px; display: block; color: inherit; word-break: break-all; font-weight: bold; }
 
-        /* Bubbles */
         .bubble {
             position: absolute;
             background: rgba(255, 255, 255, 0.3);
@@ -115,6 +133,15 @@
 </head>
 <body>
     <div class="ocean-bg" id="ocean"></div>
+
+    <div class="music-control" onclick="toggleMusic()">MUSIC: OFF</div>
+
+    <div id="player-container">
+        <iframe id="youtube-audio" width="1" height="1" 
+            src="https://www.youtube.com/embed/mLizEoshgkc?enablejsapi=1" 
+            frameborder="0" allow="autoplay">
+        </iframe>
+    </div>
 
     <div class="wrapper">
         <div id="intro" class="screen active">
@@ -141,7 +168,7 @@
             <div class="pixel-box">
                 <p>where to, sosuke mi lab?</p>
                 <div class="option" onclick="pick('japan')">JAPAN (sept trip foreshadow, pros: cheaper food!) 🇯🇵</div>
-                <div class="option" onclick="pick('vietnam')">VIETNAM (trip down memory lane, pros: bun cha!) 🇻🇳</div>
+                <div class="option" onclick="pick('vietnam')">VIETNAM (trip down memory lane, pros: bun cha!)  🇻🇳</div>
                 <div class="back-btn" onclick="next('intro')">< BACK</div>
             </div>
         </div>
@@ -160,7 +187,7 @@
                 <h3>YAHOO! We goin to Don-Don Taberu!!!</h3>
                 <p>20 Maginhawa St., QC</p>
                 <a href="https://vt.tiktok.com/ZSHcFxoyF/" target="_blank">chekirawt here!</a>
-                <p style="font-size: 10px; margin-top: 25px;">imma chi u in japayukers! aishiteru bb ✈️🌸</p>
+                <p style="font-size: 10px; margin-top: 25px;">imma chi in japayukers! aishiteru bb ✈️🌸</p>
                 <div class="back-btn" onclick="next('country')">< RE-PICK</div>
             </div>
         </div>
@@ -178,8 +205,26 @@
 
     <script>
         let chosen = '';
+        let isPlaying = false;
 
-        // Add bubbles
+        // Music Logic
+        function toggleMusic() {
+            const iframe = document.getElementById('youtube-audio');
+            const btn = document.querySelector('.music-control');
+            
+            if (!isPlaying) {
+                // To start playing, we refresh the SRC with autoplay enabled
+                iframe.src = "https://www.youtube.com/embed/mLizEoshgkc?autoplay=1&enablejsapi=1";
+                btn.innerText = "MUSIC: ON";
+                isPlaying = true;
+            } else {
+                iframe.src = "";
+                btn.innerText = "MUSIC: OFF";
+                isPlaying = false;
+            }
+        }
+
+        // Bubbles
         const ocean = document.getElementById('ocean');
         for (let i = 0; i < 12; i++) {
             let b = document.createElement('div');
@@ -195,9 +240,7 @@
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => s.classList.remove('active'));
             const target = document.getElementById(id);
-            if(target) {
-                target.classList.add('active');
-            }
+            if(target) target.classList.add('active');
         }
 
         function pick(country) {
