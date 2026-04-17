@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +7,159 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
-        body { margin: 0; font-family: 'Press Start 2P', cursive; background: black; color: white; overflow: hidden; text-align: center; font-size: 12px; }
-        body::after { content: ""; position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px); }
+        body { 
+            margin: 0; 
+            font-family: 'Press Start 2P', cursive; 
+            background: black; 
+            color: white; 
+            overflow: hidden; 
+            text-align: center; 
+            font-size: 12px;
+        }
+        /* CRT Effect */
+        body::after { 
+            content: ""; 
+            position: fixed; 
+            inset: 0; 
+            pointer-events: none; 
+            background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px); 
+            z-index: 100;
+        }
+        /* Clouds */
         .cloud { position: absolute; width: 200px; height: 60px; background: white; border-radius: 50px; opacity: 0.7; animation: drift 40s linear infinite; }
         .cloud::before, .cloud::after { content: ""; position: absolute; background: white; width: 100px; height: 80px; top: -30px; left: 30px; border-radius: 50%; }
         .cloud::after { left: 80px; width: 120px; height: 90px; }
         @keyframes drift { from { transform: translateX(-300px); } to { transform: translateX(120vw); } }
-        .screen { display: none; height: 100vh; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
+
+        .screen { display: none; height: 100vh; justify-content: center; align-items: center; flex-direction: column; padding: 20px; position: relative; z-index: 10; }
         .active { display: flex; }
-        .pixel-box { border: 4px solid white; padding: 20px; background: rgba(0,0,0,0.8); box-shadow: 0 0 20px hotpink; max-width: 600px; width: 100%; }
-        .option { margin: 10px 0; padding: 15px; border: 3px solid white; cursor: pointer; line-height: 1.5; font-size: 10px; }
-        .selected { background: hotpink; color: white; border-color: white
+        
+        .pixel-box { 
+            border: 4px solid white; 
+            padding: 25px; 
+            background: rgba(0,0,0,0.85); 
+            box-shadow: 0 0 20px hotpink; 
+            max-width: 600px; 
+            width: 100%; 
+        }
+        
+        .option { 
+            margin: 15px 0; 
+            padding: 15px; 
+            border: 3px solid white; 
+            cursor: pointer; 
+            line-height: 1.6;
+            font-size: 10px;
+            transition: 0.2s;
+        }
+        .selected { background: hotpink; color: white; border-color: white; transform: scale(1.05); }
+        
+        .boy, .girl { width: 40px; height: 40px; margin: 10px auto; }
+        .boy { background: #4aa3df; box-shadow: 0 0 10px #4aa3df; }
+        .girl { background: #ff69b4; box-shadow: 0 0 10px #ff69b4; }
+        
+        .petal { position: absolute; top: -10px; font-size: 24px; animation: fall linear infinite; z-index: 5; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        .japan { background: linear-gradient(#ffb7d5,#ffeef5); color:#222; }
+        .vietnam { background: linear-gradient(#8fd694,#d9ed92); color:#222; }
+        
+        a { color: #ff69b4; text-decoration: underline; font-size: 9px; word-break: break-all; display: block; margin-top: 10px; }
+        .japan a, .vietnam a { color: #d11d7e; }
+        h3 { font-size: 14px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="cloud" style="top:10%; animation-duration:50s;"></div>
+    <div class="cloud" style="top:30%; animation-duration:60s;"></div>
+
+    <div id="intro" class="screen active">
+        <div class="pixel-box">
+            <div class="boy"></div>
+            <p>hi ! do u wanna go on a date with me :3</p>
+            <div class="option selected" onclick="handleSelect(0)">YES</div>
+            <div class="option" onclick="handleSelect(1)">NO</div>
+        </div>
+    </div>
+
+    <div id="no" class="screen">
+        <div class="pixel-box">
+            <div class="girl"></div>
+            <p>nawwww pls think again!</p>
+            <div class="option selected" onclick="handleSelect(0)">GO BACK</div>
+        </div>
+    </div>
+
+    <div id="country" class="screen">
+        <div class="pixel-box">
+            <div class="girl"></div>
+            <p>where should we go?</p>
+            <div class="option selected" onclick="handleSelect(0)">JAPAN (for a fast-forward september 2026 trip, pros: cheaper jap food!) 🇯🇵</div>
+            <div class="option" onclick="handleSelect(1)">VIETNAM (for a trip down august 2025 memory lane, pros: has bun cha) 🇻🇳</div>
+        </div>
+    </div>
+
+    <div id="boss" class="screen">
+        <div class="pixel-box">
+            <p>FINAL BOSS:</p>
+            <p id="bossText"></p>
+            <div class="option selected" onclick="handleSelect(0)">CONFIRM ❤️</div>
+            <div class="option" onclick="handleSelect(1)">RUN AWAY 🏃</div>
+        </div>
+    </div>
+
+    <div id="japan" class="screen japan">
+        <div class="pixel-box">
+            <h3>Don-Don Taberu</h3>
+            <p>20 Maginhawa St., Quezon City</p>
+            <a href="https://vt.tiktok.com/ZSHcFxoyF/" target="_blank">chekirawt here: https://vt.tiktok.com/ZSHcFxoyF/</a>
+            <p style="margin-top:20px; font-size: 10px;">for our fast forward september trip ✈️🌸</p>
+        </div>
+    </div>
+
+    <div id="vietnam" class="screen vietnam">
+        <div class="pixel-box">
+            <h3>Saigon Corner</h3>
+            <p>22 Scout Bayoran, Diliman, QC</p>
+            <a href="https://vt.tiktok.com/ZSHcFcj6w/" target="_blank">chekirawt here: https://vt.tiktok.com/ZSHcFcj6w/</a>
+            <p style="margin-top:20px; font-size: 10px;">for a trip down memory lane 🌿✨</p>
+        </div>
+    </div>
+
+<script>
+    let currentScreen = "intro";
+    let selectedIndex = 0;
+    let chosenCountry = null;
+
+    function updateSelection() {
+        const options = document.querySelectorAll("#"+currentScreen+" .option");
+        options.forEach((opt,i)=> {
+            opt.classList.toggle("selected", i===selectedIndex);
+        });
+    }
+
+    function switchScreen(id) {
+        document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        currentScreen = id;
+        selectedIndex = 0;
+        updateSelection();
+    }
+
+    function handleSelect(index) {
+        selectedIndex = index;
+        updateSelection();
+        executeAction();
+    }
+
+    function executeAction() {
+        if(currentScreen==="intro") {
+            if(selectedIndex===0) switchScreen("country");
+            else switchScreen("no");
+        }
+        else if(currentScreen==="no") {
+            switchScreen("intro");
+        }
+        else if(currentScreen==="country") {
+            chosenCountry = selectedIndex===0 ? "japan" : "vietnam";
+            document.getElementById("boss
