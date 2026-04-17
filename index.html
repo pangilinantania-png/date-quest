@@ -26,31 +26,6 @@
             z-index: -1;
         }
 
-        /* Music Button Style */
-        .music-control {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 100;
-            background: #f8ead6;
-            color: #333;
-            border: 3px solid #333;
-            padding: 10px;
-            font-size: 8px;
-            cursor: pointer;
-            box-shadow: 4px 4px 0px #333;
-        }
-
-        /* Hidden Video */
-        #player-container {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            opacity: 0;
-            pointer-events: none;
-        }
-
         .wrapper {
             display: flex;
             flex-direction: column;
@@ -134,14 +109,9 @@
 <body>
     <div class="ocean-bg" id="ocean"></div>
 
-    <div class="music-control" onclick="toggleMusic()">MUSIC: OFF</div>
-
-    <div id="player-container">
-        <iframe id="youtube-audio" width="1" height="1" 
-            src="https://www.youtube.com/embed/mLizEoshgkc?enablejsapi=1" 
-            frameborder="0" allow="autoplay">
-        </iframe>
-    </div>
+    <audio id="ponyoMusic" loop>
+        <source src="https://open.spotify.com/track/5Cpu7flGktb3B0LI8OhTwP?si=a06deced500d4a10" type="audio/mpeg">
+    </audio>
 
     <div class="wrapper">
         <div id="intro" class="screen active">
@@ -151,8 +121,8 @@
                     <div class="pixel-char ponyo"></div>
                 </div>
                 <p>hi mi sosuke ! do u wanna go on a date with ponyo :3</p>
-                <div class="option" onclick="next('country')">YEEHEES</div>
-                <div class="option" onclick="next('no')">NOUNOU</div>
+                <div class="option" onclick="startQuest('country')">YEEHEES</div>
+                <div class="option" onclick="startQuest('no')">NOUNOU</div>
             </div>
         </div>
 
@@ -168,7 +138,7 @@
             <div class="pixel-box">
                 <p>where to, sosuke mi lab?</p>
                 <div class="option" onclick="pick('japan')">JAPAN (sept trip foreshadow, pros: cheaper food!) 🇯🇵</div>
-                <div class="option" onclick="pick('vietnam')">VIETNAM (trip down memory lane, pros: bun cha!)  🇻🇳</div>
+                <div class="option" onclick="pick('vietnam')">VIETNAM (trip down memory lane, pros: bun cha!) 🇻🇳</div>
                 <div class="back-btn" onclick="next('intro')">< BACK</div>
             </div>
         </div>
@@ -205,26 +175,19 @@
 
     <script>
         let chosen = '';
-        let isPlaying = false;
+        let musicStarted = false;
 
-        // Music Logic
-        function toggleMusic() {
-            const iframe = document.getElementById('youtube-audio');
-            const btn = document.querySelector('.music-control');
-            
-            if (!isPlaying) {
-                // To start playing, we refresh the SRC with autoplay enabled
-                iframe.src = "https://www.youtube.com/embed/mLizEoshgkc?autoplay=1&enablejsapi=1";
-                btn.innerText = "MUSIC: ON";
-                isPlaying = true;
-            } else {
-                iframe.src = "";
-                btn.innerText = "MUSIC: OFF";
-                isPlaying = false;
+        function startQuest(id) {
+            // Play music on first interaction
+            const music = document.getElementById('ponyoMusic');
+            if (!musicStarted) {
+                music.play().catch(e => console.log("Audio play blocked by browser."));
+                musicStarted = true;
             }
+            next(id);
         }
 
-        // Bubbles
+        // Bubbles animation
         const ocean = document.getElementById('ocean');
         for (let i = 0; i < 12; i++) {
             let b = document.createElement('div');
