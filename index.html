@@ -1,278 +1,154 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Quest: Final Boss Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Press Start 2P', cursive; background: black; color: white; overflow: hidden; text-align: center; }
+        body::after { content: ""; position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px); }
+        .cloud { position: absolute; width: 200px; height: 60px; background: white; border-radius: 50px; opacity: 0.7; animation: drift 40s linear infinite; }
+        .cloud::before, .cloud::after { content: ""; position: absolute; background: white; width: 100px; height: 80px; top: -30px; left: 30px; border-radius: 50%; }
+        .cloud::after { left: 80px; width: 120px; height: 90px; }
+        @keyframes drift { from { transform: translateX(-300px); } to { transform: translateX(120vw); } }
+        .screen { display: none; height: 100vh; justify-content: center; align-items: center; flex-direction: column; }
+        .active { display: flex; }
+        .pixel-box { border: 4px solid white; padding: 30px; background: rgba(0,0,0,0.7); box-shadow: 0 0 20px hotpink; max-width: 90%; }
+        .option { margin: 15px; padding: 15px; border: 3px solid white; cursor: pointer; }
+        .selected { background: hotpink; }
+        .boy, .girl { width: 40px; height: 40px; margin: 20px auto; }
+        .boy { background: #4aa3df; }
+        .girl { background: #ff69b4; }
+        .petal { position: absolute; top: -10px; font-size: 20px; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        .japan { background: linear-gradient(#ffb7d5,#ffeef5); color:#222; }
+        .vietnam { background: linear-gradient(#8fd694,#d9ed92); color:#222; }
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1">&lt;title&gt;Date Quest: Final Boss Edition&lt;/title&gt;</p>
-<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;style&gt;</p>
-<p class="p1">* { box-sizing: border-box; }</p>
-<p class="p2"><br></p>
-<p class="p1">body {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Press Start 2P', cursive;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: black;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>text-align: center;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* CRT */</p>
-<p class="p1">body::after {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>content: "";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>inset: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: repeating-linear-gradient(</p>
-<p class="p1"><span class="Apple-converted-space">    </span>to bottom,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>rgba(255,255,255,0.03) 0px,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>rgba(255,255,255,0.03) 1px,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>transparent 1px,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>transparent 3px</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Clouds */</p>
-<p class="p1">.cloud {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 200px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 60px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>opacity: 0.7;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>animation: drift 40s linear infinite;</p>
-<p class="p1">}</p>
-<p class="p1">.cloud::before,</p>
-<p class="p1">.cloud::after {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>content: "";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 100px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 80px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>top: -30px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>left: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
-<p class="p1">}</p>
-<p class="p1">.cloud::after {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>left: 80px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 120px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 90px;</p>
-<p class="p1">}</p>
-<p class="p1">@keyframes drift {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>from { transform: translateX(-300px); }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>to { transform: translateX(120vw); }</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Screens */</p>
-<p class="p1">.screen {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex-direction: column;</p>
-<p class="p1">}</p>
-<p class="p1">.active { display: flex; }</p>
-<p class="p2"><br></p>
-<p class="p1">.pixel-box {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: 4px solid white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(0,0,0,0.7);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 0 20px hotpink;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>max-width: 700px;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.option {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: 3px solid white;</p>
-<p class="p1">}</p>
-<p class="p1">.selected { background: hotpink; }</p>
-<p class="p2"><br></p>
-<p class="p1">/* Pixel characters */</p>
-<p class="p1">.boy {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: #4aa3df;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 20px auto;</p>
-<p class="p1">}</p>
-<p class="p1">.girl {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: #ff69b4;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 20px auto;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Japan petals */</p>
-<p class="p1">.petal {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>top: -10px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>animation: fall linear infinite;</p>
-<p class="p1">}</p>
-<p class="p1">@keyframes fall {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>to { transform: translateY(110vh) rotate(360deg); }</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Themes */</p>
-<p class="p1">.japan { background: linear-gradient(#ffb7d5,#ffeef5); color:#222; }</p>
-<p class="p1">.vietnam { background: linear-gradient(#8fd694,#d9ed92); color:#222; }</p>
-<p class="p1">&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="cloud" style="top:10%; animation-duration:50s;"&gt;&lt;/div&gt;</p>
-<p class="p1">&lt;div class="cloud" style="top:30%; animation-duration:60s;"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- INTRO --&gt;</p>
-<p class="p1">&lt;div id="intro" class="screen active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="pixel-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="boy"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;hi ! do u wanna go on a date with me :3&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="option selected"&gt;YES&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="option"&gt;NO&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- NO --&gt;</p>
-<p class="p1">&lt;div id="no" class="screen"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="pixel-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="girl"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;nawwww pls think again!&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="option selected"&gt;GO BACK&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- COUNTRY --&gt;</p>
-<p class="p1">&lt;div id="country" class="screen"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="pixel-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="girl"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;which country u wanna go on a date to?&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="option selected"&gt;JAPAN 🇯🇵&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="option"&gt;VIETNAM 🇻🇳&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- FINAL BOSS --&gt;</p>
-<p class="p1">&lt;div id="boss" class="screen"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="pixel-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;FINAL BOSS:&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p id="bossText"&gt;&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="option selected"&gt;CONFIRM ❤️&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="option"&gt;RUN AWAY 🏃&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- JAPAN --&gt;</p>
-<p class="p1">&lt;div id="japan" class="screen japan"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="pixel-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3&gt;Don-Don Taberu&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;20 Maginhawa St., Quezon City&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;for our fast forward september trip ✈️🌸&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- VIETNAM --&gt;</p>
-<p class="p1">&lt;div id="vietnam" class="screen vietnam"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="pixel-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3&gt;Saigon Corner&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;22 Scout Bayoran, Diliman, QC&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;for a trip down memory lane 🌿✨&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1">let currentScreen = "intro";</p>
-<p class="p1">let selectedIndex = 0;</p>
-<p class="p1">let chosenCountry = null;</p>
-<p class="p2"><br></p>
-<p class="p1">function updateSelection() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const options = document.querySelectorAll("#"+currentScreen+" .option");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>options.forEach((opt,i)=&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>opt.classList.toggle("selected", i===selectedIndex);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function switchScreen(id) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll(".screen").forEach(s=&gt;s.classList.remove("active"));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById(id).classList.add("active");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>currentScreen = id;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>selectedIndex = 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>updateSelection();</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">document.addEventListener("keydown", e =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const options = document.querySelectorAll("#"+currentScreen+" .option");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(e.key === "ArrowDown") {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>selectedIndex = (selectedIndex+1)%options.length;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>updateSelection();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(e.key === "ArrowUp") {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>selectedIndex = (selectedIndex-1+options.length)%options.length;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>updateSelection();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(e.key === "Enter") {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(currentScreen==="intro") {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(selectedIndex===0) switchScreen("country");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>else switchScreen("no");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>else if(currentScreen==="no") {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>switchScreen("intro");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>else if(currentScreen==="country") {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>chosenCountry = selectedIndex===0 ? "japan" : "vietnam";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("bossText").innerText =</p>
-<p class="p1"><span class="Apple-converted-space">        </span>chosenCountry==="japan"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>? "Confirm Japan — for our fast forward september trip?"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>: "Confirm Vietnam — for a trip down memory lane?";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>switchScreen("boss");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>else if(currentScreen==="boss") {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(selectedIndex===0) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(chosenCountry==="japan") {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>switchScreen("japan");</p>
-<p class="p1"><span class="Apple-converted-space">          </span>createPetals();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>switchScreen("vietnam");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>switchScreen("intro");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">});</p>
-<p class="p2"><br></p>
-<p class="p1">function createPetals() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>for(let i=0;i&lt;25;i++){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let p=document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p.className="petal";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p.innerHTML="🌸";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p.style.left=Math.random()*100+"vw";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p.style.animationDuration=(5+Math.random()*5)+"s";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.body.appendChild(p);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">updateSelection();</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+    <div class="cloud" style="top:10%; animation-duration:50s;"></div>
+    <div class="cloud" style="top:30%; animation-duration:60s;"></div>
+
+    <div id="intro" class="screen active">
+        <div class="pixel-box">
+            <div class="boy"></div>
+            <p>hi ! do u wanna go on a date with me :3</p>
+            <div class="option selected" onclick="handleSelect(0)">YES</div>
+            <div class="option" onclick="handleSelect(1)">NO</div>
+        </div>
+    </div>
+
+    <div id="no" class="screen">
+        <div class="pixel-box">
+            <div class="girl"></div>
+            <p>nawwww pls think again!</p>
+            <div class="option selected" onclick="handleSelect(0)">GO BACK</div>
+        </div>
+    </div>
+
+    <div id="country" class="screen">
+        <div class="pixel-box">
+            <div class="girl"></div>
+            <p>which country u wanna go on a date to?</p>
+            <div class="option selected" onclick="handleSelect(0)">JAPAN 🇯🇵</div>
+            <div class="option" onclick="handleSelect(1)">VIETNAM 🇻🇳</div>
+        </div>
+    </div>
+
+    <div id="boss" class="screen">
+        <div class="pixel-box">
+            <p>FINAL BOSS:</p>
+            <p id="bossText"></p>
+            <div class="option selected" onclick="handleSelect(0)">CONFIRM ❤️</div>
+            <div class="option" onclick="handleSelect(1)">RUN AWAY 🏃</div>
+        </div>
+    </div>
+
+    <div id="japan" class="screen japan">
+        <div class="pixel-box">
+            <h3>Don-Don Taberu</h3>
+            <p>20 Maginhawa St., Quezon City</p>
+            <p>for our fast forward september trip ✈️🌸</p>
+        </div>
+    </div>
+
+    <div id="vietnam" class="screen vietnam">
+        <div class="pixel-box">
+            <h3>Saigon Corner</h3>
+            <p>22 Scout Bayoran, Diliman, QC</p>
+            <p>for a trip down memory lane 🌿✨</p>
+        </div>
+    </div>
+
+<script>
+    let currentScreen = "intro";
+    let selectedIndex = 0;
+    let chosenCountry = null;
+
+    function updateSelection() {
+        const options = document.querySelectorAll("#"+currentScreen+" .option");
+        options.forEach((opt,i)=> {
+            opt.classList.toggle("selected", i===selectedIndex);
+        });
+    }
+
+    function switchScreen(id) {
+        document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        currentScreen = id;
+        selectedIndex = 0;
+        updateSelection();
+    }
+
+    function handleSelect(index) {
+        selectedIndex = index;
+        updateSelection();
+        executeAction();
+    }
+
+    function executeAction() {
+        if(currentScreen==="intro") {
+            if(selectedIndex===0) switchScreen("country");
+            else switchScreen("no");
+        }
+        else if(currentScreen==="no") {
+            switchScreen("intro");
+        }
+        else if(currentScreen==="country") {
+            chosenCountry = selectedIndex===0 ? "japan" : "vietnam";
+            document.getElementById("bossText").innerText = 
+                chosenCountry==="japan" ? "Confirm Japan?" : "Confirm Vietnam?";
+            switchScreen("boss");
+        }
+        else if(currentScreen==="boss") {
+            if(selectedIndex===0) {
+                if(chosenCountry==="japan") { switchScreen("japan"); createPetals(); }
+                else { switchScreen("vietnam"); }
+            } else {
+                switchScreen("intro");
+            }
+        }
+    }
+
+    document.addEventListener("keydown", e => {
+        const options = document.querySelectorAll("#"+currentScreen+" .option");
+        if(e.key === "ArrowDown") { selectedIndex = (selectedIndex+1)%options.length; updateSelection(); }
+        if(e.key === "ArrowUp") { selectedIndex = (selectedIndex-1+options.length)%options.length; updateSelection(); }
+        if(e.key === "Enter") { executeAction(); }
+    });
+
+    function createPetals() {
+        for(let i=0;i<25;i++){
+            let p=document.createElement("div");
+            p.className="petal";
+            p.innerHTML="🌸";
+            p.style.left=Math.random()*100+"vw";
+            p.style.animationDuration=(5+Math.random()*5)+"s";
+            document.body.appendChild(p);
+        }
+    }
+</script>
 </body>
 </html>
