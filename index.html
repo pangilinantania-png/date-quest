@@ -2,119 +2,194 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Date Quest: Ghibli Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Quest: Ponyo Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* ==============================
-           THEME AND RESET (Ghibli Ocean)
-           ============================== */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0;}
-        body { 
-            font-family: 'Press Start 2P', cursive; 
-            background: #204e6c; /* Ghibli Deep Ocean */
-            color: #222; /* Darker text for readability in boxes */
-            overflow: hidden; 
-            text-align: center; 
-            font-size: 11px;
-            width: 100vw;
-            height: 100vh;
-            line-height: 1.6;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* CRT Effect */
-        body::after { 
-            content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999;
-            background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px); 
+        body { 
+            margin: 0; 
+            padding: 0;
+            font-family: 'Press Start 2P', cursive; 
+            background-color: #5da399; 
+            color: #fff; 
+            overflow-x: hidden;
+            text-align: center;
+            min-height: 100vh;
         }
 
-        /* Ambient Assets (Clouds and Petals, sitting below main content) */
-        .cloud { position: absolute; width: 150px; height: 50px; background: rgba(255,255,255,0.8); border-radius: 50px; animation: drift 40s linear infinite; z-index: 1; opacity: 0.6; }
-        .cloud::before, .cloud::after { content: ""; position: absolute; background: inherit; width: 75px; height: 60px; top: -25px; left: 25px; border-radius: 50%; }
-        .cloud::after { left: 60px; width: 90px; height: 70px; }
-        @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
+        /* Fixed Background */
+        .ocean-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, #7dc4b9 0%, #4a8c82 100%);
+            z-index: -1;
+        }
 
-        .petal { position: absolute; top: -10px; font-size: 24px; animation: fall linear infinite; z-index: 5; opacity: 0.8; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        /* Main Wrapper to ensure visibility */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-        /* ==============================
-           CORE UI LAYOUT (Splitscreen)
-           ============================== */
         .screen { 
             display: none; 
-            height: 100vh; 
-            width: 100vw;
-            flex-direction: row; /* Horizontal split */
-            position: relative; 
-            z-index: 10;
-        }
-        .active { display: flex; }
-
-        /* Left side: The Environment and UI Dialogue Box */
-        .game-area {
-            flex: 1;
-            height: 100%;
-            background: #2e6b91; /* Mid-Ocean */
-            border-right: 4px solid #fff;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 20%),
-                linear-gradient(180deg, #1b3d54 0%, #204e6c 100%);
-        }
-        /* Underwater assets: bubbles and coral (pseudo-elements) */
-        .game-area::before { content: "◌ ◌ ◌ ◌"; position: absolute; bottom: 10%; right: 5%; color: rgba(255,255,255,0.2); font-size: 20px; animation: bubbleUp 10s infinite; opacity: 0.3;}
-        .game-area::after { content: "🪸"; position: absolute; bottom: 0; left: 10%; font-size: 40px; transform: scaleY(-1); opacity: 0.5;}
-        @keyframes bubbleUp { 0% { transform: translateY(0); opacity: 0.3;} 50% { opacity: 0.6;} 100% { transform: translateY(-300px); opacity: 0;} }
-
-        /* Right side: The Decision/Result Content Panel */
-        .content-area {
-            flex: 1;
-            height: 100%;
-            background: #fff;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #222;
-        }
-
-        /* ==============================
-           DIALOGUE BOX UI (Ghibli Box)
-           ============================== */
-        /* Updated Dialogue Box based on your image reference */
-        .pixel-box { 
-            border: 4px solid #fff; 
-            padding: 20px; 
-            background: #fee3ec; /* Main Pink Body */
-            box-shadow: 0 0 15px rgba(209,29,126, 0.4); 
-            width: 90%; 
+            width: 100%;
             max-width: 500px;
-            border-radius: 15px; /* Softer, Ghibli edge */
-            position: relative;
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #d11d7e; /* Pink Text */
+            animation: fadeIn 0.5s;
         }
-        /* Bubble decorative border (pseudo-elements) */
-        .pixel-box::before { content: "🫧"; position: absolute; bottom: -5px; right: -5px; font-size: 20px; color: #fff;}
-        .pixel-box::after { content: "🫧"; position: absolute; top: 10px; right: 10px; font-size: 10px; color: rgba(255,255,255,0.5);}
+        .active { display: block !important; }
 
-        /* Dialogue Box Footer (The speech point) */
-        .box-point {
-            position: absolute;
-            bottom: -30px;
-            left: 50px;
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid #fee3ec;
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .pixel-box { 
+            border: 6px solid #f8ead6; 
+            padding: 25px; 
+            background: rgba(230, 95, 92, 0.95); /* Ponyo Red */
+            box-shadow: 8px 8px 0px #333; 
+            border-radius: 4px;
         }
-        .box-point::after { content: ""; position: absolute; bottom: 1px; left: -14px; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top:
+
+        .character-wrap { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .pixel-char { width: 40px; height: 40px; border: 3px solid #333; display: inline-block; }
+        .sousuke { background: #ffcc33; position: relative; } 
+        .sousuke::after { content: ''; position: absolute; bottom: 0; left:0; width: 100%; height: 50%; background: #2c5ba9; } 
+        .ponyo { background: #ff6666; border-radius: 50% 50% 0 0; } 
+
+        .option { 
+            margin: 15px 0; 
+            padding: 18px; 
+            border: 4px solid #333; 
+            background: #f8ead6; 
+            color: #333;
+            cursor: pointer; 
+            font-size: 10px;
+            line-height: 1.4;
+        }
+        .option:active { transform: scale(0.98); background: #ffcc33; }
+
+        .japan-res { background: #ffb7d5 !important; color: #d11d7e; border-color: #fff; }
+        .vietnam-res { background: #8fd694 !important; color: #1e4d2b; border-color: #fff; }
+
+        a { font-size: 9px; margin-top: 15px; display: block; color: inherit; word-break: break-all; }
+
+        /* Bubbles */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid white;
+            border-radius: 50%;
+            bottom: -50px;
+            pointer-events: none;
+            animation: rise 10s infinite ease-in;
+        }
+        @keyframes rise {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-110vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ocean-bg" id="ocean"></div>
+
+    <div class="wrapper">
+        <div id="intro" class="screen active">
+            <div class="pixel-box">
+                <div class="character-wrap">
+                    <div class="pixel-char sousuke"></div>
+                    <div class="pixel-char ponyo"></div>
+                </div>
+                <p>hi ! do u wanna go on a date with me :3</p>
+                <div class="option" onclick="next('country')">YES</div>
+                <div class="option" onclick="next('no')">NO</div>
+            </div>
+        </div>
+
+        <div id="no" class="screen">
+            <div class="pixel-box">
+                <div class="pixel-char ponyo" style="margin-bottom:15px;"></div>
+                <p>nawwww pls think again!</p>
+                <div class="option" onclick="next('intro')">GO BACK</div>
+            </div>
+        </div>
+
+        <div id="country" class="screen">
+            <div class="pixel-box">
+                <p>where to, Sousuke?</p>
+                <div class="option" onclick="pick('japan')">JAPAN (Sept 2026, cheap food!) 🇯🇵</div>
+                <div class="option" onclick="pick('vietnam')">VIETNAM (Aug 2025 memory lane, bun cha!) 🇻🇳</div>
+            </div>
+        </div>
+
+        <div id="boss" class="screen">
+            <div class="pixel-box">
+                <p>FINAL BOSS:</p>
+                <p id="bossText" style="font-size:10px;"></p>
+                <div class="option" onclick="confirmDate()">CONFIRM ❤️</div>
+                <div class="option" onclick="next('intro')">RUN AWAY 🏃</div>
+            </div>
+        </div>
+
+        <div id="japan" class="screen">
+            <div class="pixel-box japan-res">
+                <h3>Don-Don Taberu</h3>
+                <p>20 Maginhawa St., QC</p>
+                <a href="https://vt.tiktok.com/ZSHcFxoyF/" target="_blank">chekirawt here!</a>
+                <p style="font-size: 8px; margin-top: 20px;">september trip ✈️🌸</p>
+            </div>
+        </div>
+
+        <div id="vietnam" class="screen">
+            <div class="pixel-box vietnam-res">
+                <h3>Saigon Corner</h3>
+                <p>22 Scout Bayoran, QC</p>
+                <a href="https://vt.tiktok.com/ZSHcFcj6w/" target="_blank">chekirawt here!</a>
+                <p style="font-size: 8px; margin-top: 20px;">memory lane 🌿✨</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chosen = '';
+
+        // Add bubbles
+        const ocean = document.getElementById('ocean');
+        for (let i = 0; i < 10; i++) {
+            let b = document.createElement('div');
+            b.className = 'bubble';
+            let s = Math.random() * 20 + 5 + 'px';
+            b.style.width = s; b.style.height = s;
+            b.style.left = Math.random() * 100 + 'vw';
+            b.style.animationDelay = Math.random() * 8 + 's';
+            ocean.appendChild(b);
+        }
+
+        function next(id) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(s => s.classList.remove('active'));
+            
+            // Show target screen
+            const target = document.getElementById(id);
+            if(target) {
+                target.classList.add('active');
+            }
+        }
+
+        function pick(country) {
+            chosen = country;
+            document.getElementById('bossText').innerText = country === 'japan' ? "Confirm Japan?" : "Confirm Vietnam?";
+            next('boss');
+        }
+
+        function confirmDate() {
+            next(chosen);
+        }
+    </script>
+</body>
+</html>
