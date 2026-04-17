@@ -2,164 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Date Quest: Final Boss Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Date Quest: Ghibli Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
+        /* ==============================
+           THEME AND RESET (Ghibli Ocean)
+           ============================== */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0;}
         body { 
-            margin: 0; 
             font-family: 'Press Start 2P', cursive; 
-            background: black; 
-            color: white; 
+            background: #204e6c; /* Ghibli Deep Ocean */
+            color: #222; /* Darker text for readability in boxes */
             overflow: hidden; 
             text-align: center; 
-            font-size: 12px;
+            font-size: 11px;
+            width: 100vw;
+            height: 100vh;
+            line-height: 1.6;
         }
+        
         /* CRT Effect */
         body::after { 
-            content: ""; 
-            position: fixed; 
-            inset: 0; 
-            pointer-events: none; 
+            content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999;
             background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px); 
-            z-index: 100;
         }
-        /* Clouds */
-        .cloud { position: absolute; width: 200px; height: 60px; background: white; border-radius: 50px; opacity: 0.7; animation: drift 40s linear infinite; }
-        .cloud::before, .cloud::after { content: ""; position: absolute; background: white; width: 100px; height: 80px; top: -30px; left: 30px; border-radius: 50%; }
-        .cloud::after { left: 80px; width: 120px; height: 90px; }
-        @keyframes drift { from { transform: translateX(-300px); } to { transform: translateX(120vw); } }
 
-        .screen { display: none; height: 100vh; justify-content: center; align-items: center; flex-direction: column; padding: 20px; position: relative; z-index: 10; }
-        .active { display: flex; }
-        
-        .pixel-box { 
-            border: 4px solid white; 
-            padding: 25px; 
-            background: rgba(0,0,0,0.85); 
-            box-shadow: 0 0 20px hotpink; 
-            max-width: 600px; 
-            width: 100%; 
-        }
-        
-        .option { 
-            margin: 15px 0; 
-            padding: 15px; 
-            border: 3px solid white; 
-            cursor: pointer; 
-            line-height: 1.6;
-            font-size: 10px;
-            transition: 0.2s;
-        }
-        .selected { background: hotpink; color: white; border-color: white; transform: scale(1.05); }
-        
-        .boy, .girl { width: 40px; height: 40px; margin: 10px auto; }
-        .boy { background: #4aa3df; box-shadow: 0 0 10px #4aa3df; }
-        .girl { background: #ff69b4; box-shadow: 0 0 10px #ff69b4; }
-        
-        .petal { position: absolute; top: -10px; font-size: 24px; animation: fall linear infinite; z-index: 5; }
+        /* Ambient Assets (Clouds and Petals, sitting below main content) */
+        .cloud { position: absolute; width: 150px; height: 50px; background: rgba(255,255,255,0.8); border-radius: 50px; animation: drift 40s linear infinite; z-index: 1; opacity: 0.6; }
+        .cloud::before, .cloud::after { content: ""; position: absolute; background: inherit; width: 75px; height: 60px; top: -25px; left: 25px; border-radius: 50%; }
+        .cloud::after { left: 60px; width: 90px; height: 70px; }
+        @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
+
+        .petal { position: absolute; top: -10px; font-size: 24px; animation: fall linear infinite; z-index: 5; opacity: 0.8; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
-        .japan { background: linear-gradient(#ffb7d5,#ffeef5); color:#222; }
-        .vietnam { background: linear-gradient(#8fd694,#d9ed92); color:#222; }
-        
-        a { color: #ff69b4; text-decoration: underline; font-size: 9px; word-break: break-all; display: block; margin-top: 10px; }
-        .japan a, .vietnam a { color: #d11d7e; }
-        h3 { font-size: 14px; margin-bottom: 10px; }
-    </style>
-</head>
-<body>
-    <div class="cloud" style="top:10%; animation-duration:50s;"></div>
-    <div class="cloud" style="top:30%; animation-duration:60s;"></div>
-
-    <div id="intro" class="screen active">
-        <div class="pixel-box">
-            <div class="boy"></div>
-            <p>hi ! do u wanna go on a date with me :3</p>
-            <div class="option selected" onclick="handleSelect(0)">YES</div>
-            <div class="option" onclick="handleSelect(1)">NO</div>
-        </div>
-    </div>
-
-    <div id="no" class="screen">
-        <div class="pixel-box">
-            <div class="girl"></div>
-            <p>nawwww pls think again!</p>
-            <div class="option selected" onclick="handleSelect(0)">GO BACK</div>
-        </div>
-    </div>
-
-    <div id="country" class="screen">
-        <div class="pixel-box">
-            <div class="girl"></div>
-            <p>where should we go?</p>
-            <div class="option selected" onclick="handleSelect(0)">JAPAN (for a fast-forward september 2026 trip, pros: cheaper jap food!) 🇯🇵</div>
-            <div class="option" onclick="handleSelect(1)">VIETNAM (for a trip down august 2025 memory lane, pros: has bun cha) 🇻🇳</div>
-        </div>
-    </div>
-
-    <div id="boss" class="screen">
-        <div class="pixel-box">
-            <p>FINAL BOSS:</p>
-            <p id="bossText"></p>
-            <div class="option selected" onclick="handleSelect(0)">CONFIRM ❤️</div>
-            <div class="option" onclick="handleSelect(1)">RUN AWAY 🏃</div>
-        </div>
-    </div>
-
-    <div id="japan" class="screen japan">
-        <div class="pixel-box">
-            <h3>Don-Don Taberu</h3>
-            <p>20 Maginhawa St., Quezon City</p>
-            <a href="https://vt.tiktok.com/ZSHcFxoyF/" target="_blank">chekirawt here: https://vt.tiktok.com/ZSHcFxoyF/</a>
-            <p style="margin-top:20px; font-size: 10px;">for our fast forward september trip ✈️🌸</p>
-        </div>
-    </div>
-
-    <div id="vietnam" class="screen vietnam">
-        <div class="pixel-box">
-            <h3>Saigon Corner</h3>
-            <p>22 Scout Bayoran, Diliman, QC</p>
-            <a href="https://vt.tiktok.com/ZSHcFcj6w/" target="_blank">chekirawt here: https://vt.tiktok.com/ZSHcFcj6w/</a>
-            <p style="margin-top:20px; font-size: 10px;">for a trip down memory lane 🌿✨</p>
-        </div>
-    </div>
-
-<script>
-    let currentScreen = "intro";
-    let selectedIndex = 0;
-    let chosenCountry = null;
-
-    function updateSelection() {
-        const options = document.querySelectorAll("#"+currentScreen+" .option");
-        options.forEach((opt,i)=> {
-            opt.classList.toggle("selected", i===selectedIndex);
-        });
-    }
-
-    function switchScreen(id) {
-        document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-        document.getElementById(id).classList.add("active");
-        currentScreen = id;
-        selectedIndex = 0;
-        updateSelection();
-    }
-
-    function handleSelect(index) {
-        selectedIndex = index;
-        updateSelection();
-        executeAction();
-    }
-
-    function executeAction() {
-        if(currentScreen==="intro") {
-            if(selectedIndex===0) switchScreen("country");
-            else switchScreen("no");
+        /* ==============================
+           CORE UI LAYOUT (Splitscreen)
+           ============================== */
+        .screen { 
+            display: none; 
+            height: 100vh; 
+            width: 100vw;
+            flex-direction: row; /* Horizontal split */
+            position: relative; 
+            z-index: 10;
         }
-        else if(currentScreen==="no") {
-            switchScreen("intro");
+        .active { display: flex; }
+
+        /* Left side: The Environment and UI Dialogue Box */
+        .game-area {
+            flex: 1;
+            height: 100%;
+            background: #2e6b91; /* Mid-Ocean */
+            border-right: 4px solid #fff;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 20%),
+                linear-gradient(180deg, #1b3d54 0%, #204e6c 100%);
         }
-        else if(currentScreen==="country") {
-            chosenCountry = selectedIndex===0 ? "japan" : "vietnam";
-            document.getElementById("boss
+        /* Underwater assets: bubbles and coral (pseudo-elements) */
+        .game-area::before { content: "◌ ◌ ◌ ◌"; position: absolute; bottom: 10%; right: 5%; color: rgba(255,255,255,0.2); font-size: 20px; animation: bubbleUp 10s infinite; opacity: 0.3;}
+        .game-area::after { content: "🪸"; position: absolute; bottom: 0; left: 10%; font-size: 40px; transform: scaleY(-1); opacity: 0.5;}
+        @keyframes bubbleUp { 0% { transform: translateY(0); opacity: 0.3;} 50% { opacity: 0.6;} 100% { transform: translateY(-300px); opacity: 0;} }
+
+        /* Right side: The Decision/Result Content Panel */
+        .content-area {
+            flex: 1;
+            height: 100%;
+            background: #fff;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #222;
+        }
+
+        /* ==============================
+           DIALOGUE BOX UI (Ghibli Box)
+           ============================== */
+        /* Updated Dialogue Box based on your image reference */
+        .pixel-box { 
+            border: 4px solid #fff; 
+            padding: 20px; 
+            background: #fee3ec; /* Main Pink Body */
+            box-shadow: 0 0 15px rgba(209,29,126, 0.4); 
+            width: 90%; 
+            max-width: 500px;
+            border-radius: 15px; /* Softer, Ghibli edge */
+            position: relative;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #d11d7e; /* Pink Text */
+        }
+        /* Bubble decorative border (pseudo-elements) */
+        .pixel-box::before { content: "🫧"; position: absolute; bottom: -5px; right: -5px; font-size: 20px; color: #fff;}
+        .pixel-box::after { content: "🫧"; position: absolute; top: 10px; right: 10px; font-size: 10px; color: rgba(255,255,255,0.5);}
+
+        /* Dialogue Box Footer (The speech point) */
+        .box-point {
+            position: absolute;
+            bottom: -30px;
+            left: 50px;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #fee3ec;
+        }
+        .box-point::after { content: ""; position: absolute; bottom: 1px; left: -14px; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top:
